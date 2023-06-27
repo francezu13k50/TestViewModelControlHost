@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,10 +21,14 @@ namespace TestViewModelControlHost
         {
             InitializeComponent();
 
+            IDisposable activationSubscription = Disposable.Empty;
+            activationSubscription =
             this.WhenActivated(disposableRegistration =>
             {
                 label1.Text = $"View1 instance {_instanceCounter}";
 
+                activationSubscription
+                .DisposeWith(disposableRegistration);
             });
 
             _instanceCounter++;
