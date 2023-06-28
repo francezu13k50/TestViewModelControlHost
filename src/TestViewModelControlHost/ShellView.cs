@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reactive.Linq;
 
 namespace TestViewModelControlHost
 {
@@ -20,9 +21,37 @@ namespace TestViewModelControlHost
             viewModelControlHost1.CacheViews = true;
 
 
-            this.OneWayBind(ViewModel,
-                vm => vm.SelectedViewModel,
-                v => v.viewModelControlHost1.ViewModel);
+            //this.OneWayBind(ViewModel,
+            //    vm => vm.SelectedViewModel,
+            //    v => v.viewModelControlHost1.ViewModel);
+
+
+            this.WhenAnyValue(v => v.ViewModel.SelectedViewModel)
+                .WhereNotNull()
+                .Select(vm =>
+                {
+                    var view = ViewLocator.Current.ResolveView(vm);
+                    view.ViewModel = vm;
+                    return view;
+                })
+                .Cast<Control>()
+                .Subscribe(view =>
+                {
+
+                    panel1.SuspendLayout();
+                    // clear out existing visible control view
+                    foreach (Control c in panel1.Controls)
+                    {
+                        //var v = (IViewFor)c;
+                        //v.ViewModel = null;
+                        panel1.Controls.Remove(c);
+                    }
+
+                    view.Dock = DockStyle.Fill;
+                    panel1.Controls.Add(view);
+
+                    panel1.ResumeLayout();
+                });
 
             this.BindCommand(ViewModel,
                 vm => vm.SelectView1,

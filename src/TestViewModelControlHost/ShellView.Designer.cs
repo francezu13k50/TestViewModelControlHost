@@ -32,10 +32,12 @@ namespace TestViewModelControlHost
             this.viewModelControlHost1 = new ReactiveUI.Winforms.ViewModelControlHost();
             this.btnSelectView1 = new System.Windows.Forms.Button();
             this.btnSelectView2 = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // viewModelControlHost1
             // 
+            this.viewModelControlHost1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.viewModelControlHost1.CacheViews = false;
             this.viewModelControlHost1.DefaultContent = null;
             this.viewModelControlHost1.Location = new System.Drawing.Point(40, 25);
@@ -63,11 +65,19 @@ namespace TestViewModelControlHost
             this.btnSelectView2.Text = "View 2";
             this.btnSelectView2.UseVisualStyleBackColor = true;
             // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(12, 12);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(410, 279);
+            this.panel1.TabIndex = 3;
+            // 
             // ShellView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(481, 361);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnSelectView2);
             this.Controls.Add(this.btnSelectView1);
             this.Controls.Add(this.viewModelControlHost1);
@@ -82,6 +92,7 @@ namespace TestViewModelControlHost
         private ReactiveUI.Winforms.ViewModelControlHost viewModelControlHost1;
         private System.Windows.Forms.Button btnSelectView1;
         private System.Windows.Forms.Button btnSelectView2;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

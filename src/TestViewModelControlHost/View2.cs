@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reactive.Disposables;
@@ -12,25 +13,35 @@ using System.Windows.Forms;
 
 namespace TestViewModelControlHost
 {
+
     public partial class View2 : UserControl, IViewFor<ViewModel2>
     {
-        private int _instanceCounter;
+        private static int _instanceCounter;
 
         public View2()
         {
             InitializeComponent();
 
+            Debug.WriteLine("New View2");
+
             IDisposable activationSubscription = Disposable.Empty;
             activationSubscription =
             this.WhenActivated(disposableRegistration =>
             {
-                label1.Text = $"View2 instance {_instanceCounter}";
+                Debug.WriteLine("Activating View2");
 
-                activationSubscription
+                label1.Text = $"View2 instance count = {_instanceCounter}";
+
+                Disposable.Create(() => Debug.WriteLine("View2 deactivated"))
                 .DisposeWith(disposableRegistration);
+
+                //activationSubscription
+                //.DisposeWith(disposableRegistration);
             });
 
             _instanceCounter++;
+
+            this.Disposed += (s, e) => Debug.WriteLine("View2 disposed");
         }
 
 

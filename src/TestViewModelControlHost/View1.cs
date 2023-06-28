@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reactive.Disposables;
@@ -21,17 +22,26 @@ namespace TestViewModelControlHost
         {
             InitializeComponent();
 
+            Debug.WriteLine("New View1");
+
             IDisposable activationSubscription = Disposable.Empty;
             activationSubscription =
             this.WhenActivated(disposableRegistration =>
             {
-                label1.Text = $"View1 instance {_instanceCounter}";
+            Debug.WriteLine("Activating View1");
 
-                activationSubscription
-                .DisposeWith(disposableRegistration);
+            label1.Text = $"View1 instance count = {_instanceCounter}";
+
+            Disposable.Create(() => Debug.WriteLine("View1 deactivated"))
+            .DisposeWith(disposableRegistration);
+            
+                //activationSubscription
+                //.DisposeWith(disposableRegistration);
             });
 
             _instanceCounter++;
+
+            this.Disposed += (s, e) => Debug.WriteLine("View1 disposed");
         }
 
 
