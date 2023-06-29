@@ -44,11 +44,13 @@ namespace TestViewModelControlHost
                     {
                         //var v = (IViewFor)c;
                         //v.ViewModel = null;
+                        c.Hide();
                         panel1.Controls.Remove(c);
                     }
 
                     view.Dock = DockStyle.Fill;
                     panel1.Controls.Add(view);
+                    view.Show();
 
                     panel1.ResumeLayout();
                 });

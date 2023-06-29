@@ -28,21 +28,22 @@ namespace TestViewModelControlHost
             activationSubscription =
             this.WhenActivated(disposableRegistration =>
             {
-            Debug.WriteLine("Activating View1");
+                
+                Debug.WriteLine("Activating View1");
 
-            label1.Text = $"View1 instance count = {_instanceCounter}";
+                label1.Text = $"View1 instance count = {_instanceCounter}";
 
-            Disposable.Create(() => Debug.WriteLine("View1 deactivated"))
-            .DisposeWith(disposableRegistration);
-            
-                //activationSubscription
-                //.DisposeWith(disposableRegistration);
+                Disposable.Create(() => Debug.WriteLine("View1 deactivated"))
+                .DisposeWith(disposableRegistration);
+                
+
             });
 
             _instanceCounter++;
 
-            this.Disposed += (s, e) => Debug.WriteLine("View1 disposed");
+            this.Disposed += (s, e) => activationSubscription.Dispose();
         }
+
 
 
 
