@@ -20,16 +20,12 @@ namespace TestViewModelControlHost
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
+            Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
 
-            Locator.CurrentMutable.RegisterConstant(new ShellView(), typeof(IViewFor<ShellViewModel>));
-            Locator.CurrentMutable.RegisterLazySingleton<IViewFor<ViewModel1>>(() => new View1());
-            Locator.CurrentMutable.RegisterLazySingleton<IViewFor<ViewModel2>>(() => new View2());
+            //Locator.CurrentMutable.RegisterConstant(new ShellView(), typeof(IViewFor<ShellViewModel>));
+            //Locator.CurrentMutable.RegisterConstant<IViewFor<ViewModel1>>(new View1());
+            //Locator.CurrentMutable.RegisterConstant<IViewFor<ViewModel2>>(new View2());
 
-
-            //var vm = new ShellViewModel();
-            //var shellView = Locator.Current.GetService<IViewFor<ShellViewModel>>();
-            //shellView.ViewModel = vm;
 
             var shellView = GetAndConfigureViewFor(new ShellViewModel());
             Application.Run(shellView as Form);

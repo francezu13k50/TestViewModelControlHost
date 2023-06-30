@@ -15,23 +15,26 @@ namespace TestViewModelControlHost
 
         private readonly object _viewModel1 = new ViewModel1();
         private readonly object _viewModel2 = new ViewModel2();
-
+        private readonly object _nullScreen = null;
 
         public ShellViewModel()
         {
-            _selectedViewModel =
+            _selectedScreen =
             Observable.Merge(SelectView1.Select(_ => _viewModel1),
-                             SelectView2.Select(_ => _viewModel2))
-                .Do(x => Debug.WriteLine($"Setting SelectedViewModel to {x}"))
-                .ToProperty(this, vm => vm.SelectedViewModel);
+                             SelectView2.Select(_ => _viewModel2),
+                             SelectNullScreen.Select(_ => _nullScreen))
+                .Do(x => Debug.WriteLine($"Setting SelectedScreen to {x}"))
+                .ToProperty(this, vm => vm.SelectedScreen);
 
         }
 
         public ReactiveCommand<Unit, Unit> SelectView1 { get; } = ReactiveCommand.Create(() => { });
         public ReactiveCommand<Unit, Unit> SelectView2 { get; } = ReactiveCommand.Create(() => { });
 
-        private ObservableAsPropertyHelper<object> _selectedViewModel;
+        public ReactiveCommand<Unit, Unit> SelectNullScreen { get; } = ReactiveCommand.Create(() => { });
 
-        public object SelectedViewModel { get => _selectedViewModel.Value; }
+        private ObservableAsPropertyHelper<object> _selectedScreen;
+
+        public object SelectedScreen { get => _selectedScreen.Value; }
     }
 }

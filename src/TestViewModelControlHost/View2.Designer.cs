@@ -52,6 +52,7 @@ namespace TestViewModelControlHost
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.Controls.Add(this.label1);
+            this.DoubleBuffered = true;
             this.Name = "View2";
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reactive.Linq;
 
+
 namespace TestViewModelControlHost
 {
     public partial class ShellView : Form, IViewFor<ShellViewModel>
@@ -18,42 +19,16 @@ namespace TestViewModelControlHost
         {
             InitializeComponent();
 
-            viewModelControlHost1.CacheViews = true;
+            cachedControlHost1.Configure((vm) =>
+            {
+                var view = ViewLocator.Current.ResolveView(vm);
+                view.ViewModel = vm;
+                return (Control)view;
+            });
 
-
-            //this.OneWayBind(ViewModel,
-            //    vm => vm.SelectedViewModel,
-            //    v => v.viewModelControlHost1.ViewModel);
-
-
-            this.WhenAnyValue(v => v.ViewModel.SelectedViewModel)
-                .WhereNotNull()
-                .Select(vm =>
-                {
-                    var view = ViewLocator.Current.ResolveView(vm);
-                    view.ViewModel = vm;
-                    return view;
-                })
-                .Cast<Control>()
-                .Subscribe(view =>
-                {
-
-                    panel1.SuspendLayout();
-                    // clear out existing visible control view
-                    foreach (Control c in panel1.Controls)
-                    {
-                        //var v = (IViewFor)c;
-                        //v.ViewModel = null;
-                        c.Hide();
-                        panel1.Controls.Remove(c);
-                    }
-
-                    view.Dock = DockStyle.Fill;
-                    panel1.Controls.Add(view);
-                    view.Show();
-
-                    panel1.ResumeLayout();
-                });
+            this.OneWayBind(ViewModel,
+                vm => vm.SelectedScreen,
+                v => v.cachedControlHost1.ViewModel);
 
             this.BindCommand(ViewModel,
                 vm => vm.SelectView1,
@@ -62,6 +37,10 @@ namespace TestViewModelControlHost
             this.BindCommand(ViewModel,
                 vm => vm.SelectView2,
                 v => v.btnSelectView2);
+
+            this.BindCommand(ViewModel,
+                vm => vm.SelectNullScreen,
+                v => v.btnSelectNullView);
         }
 
         public ShellViewModel ViewModel { get; set; }
